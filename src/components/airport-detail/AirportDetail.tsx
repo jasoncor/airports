@@ -39,7 +39,7 @@ export const AirportDetail = () => {
   const currency = currencyCodes.country(airport?.country.countryName);
 
   return (
-    <div className="flex flex-col items-center w-full h-full p-4 md:p-8">
+    <div className="flex flex-col items-center w-full h-full p-4 md:p-8 bg-gray-50">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
