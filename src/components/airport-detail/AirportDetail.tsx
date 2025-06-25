@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "@tanstack/react-router";
 import currencyCodes from "currency-codes";
 import { useAirports } from "../../hooks/useAirports";
 import { Spinner } from "../common";
+import { motion } from "framer-motion";
 
 export const AirportDetail = () => {
   const { code } = useParams({ from: "/airports/$code" });
@@ -39,62 +40,112 @@ export const AirportDetail = () => {
 
   return (
     <div className="flex flex-col items-center w-full h-full p-4 md:p-8">
-      <div className="bg-white rounded-2xl shadow-xl border border-gray-100 w-full max-w-xl p-6 md:p-10 flex flex-col items-start mt-8 md:mt-12">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-1 tracking-tight w-full text-left">
-          {airport.airportName}
-        </h1>
-        <span className="text-lg text-gray-400 font-medium mb-6 tracking-wide w-full text-left">
-          ({airport.airportCode})
-        </span>
-        <div className="grid grid-cols-2 gap-x-8 gap-y-4 w-full mb-10">
-          <div className="col-span-2 text-base md:text-lg text-gray-700 mb-2">
-            <span className="font-semibold text-gray-800">Currency:</span>{" "}
-            {currency[0]?.code || "N/A"}
-          </div>
-          <div className="col-span-2 text-base md:text-lg text-gray-700 mb-2">
-            <span className="font-semibold text-gray-800">Timezone:</span>{" "}
-            {airport.city.timeZoneName}
-          </div>
-          <div className="mb-2">
-            <span className="block font-semibold text-gray-800">Country</span>
-            <span className="block text-gray-600">
-              {airport.country.countryName}
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+        className="bg-white rounded-2xl shadow-xl border border-gray-100 w-full max-w-2xl p-0 flex flex-col items-stretch md:mt-12 overflow-hidden"
+      >
+        {/* Banner with code and name */}
+        <div className="bg-gradient-to-r from-red-600 to-red-400 px-4 py-4 md:px-8 md:py-8 flex flex-col md:flex-row items-center gap-4 md:gap-6">
+          <div className="flex flex-col items-center md:items-start flex-1">
+            <span className="text-3xl md:text-6xl font-black text-white drop-shadow mb-1 md:mb-2">
+              {airport.airportCode}
             </span>
-          </div>
-          <div className="mb-2">
-            <span className="block font-semibold text-gray-800">City</span>
-            <span className="block text-gray-600">{airport.city.cityName}</span>
-          </div>
-          <div className="mb-2">
-            <span className="block font-semibold text-gray-800">State</span>
-            <span className="block text-gray-600">
-              {airport.state.stateName || "N/A"}
-            </span>
-          </div>
-          <div className="mb-2">
-            <span className="block font-semibold text-gray-800">Region</span>
-            <span className="block text-gray-600">
-              {airport.region.regionName}
-            </span>
-          </div>
-          <div className="col-span-2 mt-2">
-            <span className="block font-semibold text-gray-800">Location</span>
-            <span className="block text-gray-600">
-              {airport.location.latitude}° {airport.location.latitudeDirection},{" "}
-              {airport.location.longitude}°{" "}
-              {airport.location.longitudeDirection}
-              {airport.location.aboveSeaLevel !== undefined &&
-                ` (Above sea level: ${airport.location.aboveSeaLevel}m)`}
+            <span className="text-lg md:text-3xl font-bold text-white/90 mb-1 text-center md:text-left">
+              {airport.airportName}
             </span>
           </div>
         </div>
-        <button
-          onClick={() => navigate({ to: "/airports" })}
-          className="mt-2 px-6 py-2 bg-red-600 text-white font-semibold rounded-lg shadow hover:bg-red-700 transition-colors duration-150 self-center"
-        >
-          Back to Airports List
-        </button>
-      </div>
+        {/* Details section - condensed on mobile */}
+        <div className="p-6 flex flex-col md:p-8 md:grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6 bg-gray-50 text-sm md:text-base">
+          {currency[0]?.code && (
+            <div className="mb-4 md:mb-4">
+              <span className="block text-gray-500 text-xs font-semibold uppercase mb-1 md:mb-1">
+                Currency
+              </span>
+              <span className="block font-mono text-gray-800">
+                {currency[0]?.code}
+              </span>
+            </div>
+          )}
+          <div className="mb-4 md:mb-4">
+            <span className="block text-gray-500 text-xs font-semibold uppercase mb-1 md:mb-1">
+              Timezone
+            </span>
+            <span className="block font-mono text-gray-800">
+              {airport.city.timeZoneName}
+            </span>
+          </div>
+          <div className="mb-4 md:mb-4">
+            <span className="block text-gray-500 text-xs font-semibold uppercase mb-1 md:mb-1">
+              Country
+            </span>
+            <span className="block font-mono text-gray-800">
+              {airport.country.countryName}
+            </span>
+          </div>
+          {airport.state.stateName ? (
+            <div className="mb-4 md:mb-4">
+              <span className="block text-gray-500 text-xs font-semibold uppercase mb-1 md:mb-1">
+                State
+              </span>
+              <span className="block font-mono text-gray-800">
+                {airport.state.stateName}
+              </span>
+            </div>
+          ) : (
+            <div className="mb-4 md:mb-4">
+              <span className="block text-gray-500 text-xs font-semibold uppercase mb-1 md:mb-1">
+                Region
+              </span>
+              <span className="block font-mono text-gray-800">
+                {airport.region.regionName}
+              </span>
+            </div>
+          )}
+          <div className="mb-4 md:mb-4">
+            <span className="block text-gray-500 text-xs font-semibold uppercase mb-1 md:mb-1">
+              City
+            </span>
+            <span className="block font-mono text-gray-800">
+              {airport.city.cityName}
+            </span>
+          </div>
+          <div className="mb-4 md:mb-4">
+            <span className="block text-gray-500 text-xs font-semibold uppercase mb-1 md:mb-1">
+              Location
+            </span>
+            <span className="block font-mono text-gray-800">
+              {airport.location.latitude}° {airport.location.latitudeDirection},{" "}
+              {airport.location.longitude}°{" "}
+              {airport.location.longitudeDirection}
+            </span>
+          </div>
+        </div>
+        <div className="flex justify-center items-center bg-white border-t border-gray-100 p-4 md:p-6">
+          <button
+            onClick={() => navigate({ to: "/airports" })}
+            className="px-4 py-2 md:px-5 md:py-2 bg-red-600 text-white font-bold rounded-lg shadow hover:bg-red-700 transition-colors duration-150 flex items-center gap-2 text-sm md:text-base"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="w-4 h-4 md:w-5 md:h-5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 19.5L8.25 12l7.5-7.5"
+              />
+            </svg>
+            Back
+          </button>
+        </div>
+      </motion.div>
     </div>
   );
 };

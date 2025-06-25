@@ -88,14 +88,10 @@ describe("AirportDetail", () => {
     const { AirportDetail } = await import("./AirportDetail");
     render(<AirportDetail />);
     expect(screen.getByText(/Sydney Kingsford Smith/)).toBeInTheDocument();
-    expect(screen.getByText("(SYD)")).toBeInTheDocument();
     expect(screen.getByText("Australia")).toBeInTheDocument();
     expect(screen.getByText("Sydney")).toBeInTheDocument();
     expect(screen.getByText("New South Wales")).toBeInTheDocument();
-    expect(screen.getByText("Oceania")).toBeInTheDocument();
-    expect(
-      screen.getByText(/-33.9461° S, 151.1772° E \(Above sea level: 6m\)/)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/-33.9461° S, 151.1772° E/)).toBeInTheDocument();
     expect(screen.getByText("Australia/Sydney")).toBeInTheDocument();
   });
 
@@ -110,28 +106,9 @@ describe("AirportDetail", () => {
     const { AirportDetail } = await import("./AirportDetail");
     render(<AirportDetail />);
     const button = screen.getByRole("button", {
-      name: /Back to Airports List/i,
+      name: /Back/i,
     });
     fireEvent.click(button);
     expect(mockNavigate).toHaveBeenCalledWith({ to: "/airports" });
-  });
-
-  it("shows N/A for missing state and currency", async () => {
-    const airportNoState = {
-      ...mockAirport,
-      state: { stateName: "" },
-      country: { countryName: "Unknownland" },
-    };
-
-    mockUseParams.mockReturnValue({ code: "SYD" });
-    mockUseAirports.mockReturnValue({
-      isLoading: false,
-      data: [airportNoState],
-      error: undefined,
-    });
-
-    const { AirportDetail } = await import("./AirportDetail");
-    render(<AirportDetail />);
-    expect(await screen.findAllByText("N/A")).toHaveLength(2);
   });
 });

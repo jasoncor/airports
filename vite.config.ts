@@ -6,7 +6,7 @@ import { tanstackRouter } from "@tanstack/router-plugin/vite";
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: "/airports/", // Set base for GitHub Pages deployment
+  base: "/airports", // Set base for GitHub Pages deployment
   plugins: [
     tanstackRouter({ target: "react", autoCodeSplitting: true }),
     react(),

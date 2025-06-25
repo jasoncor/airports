@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+@theme {
+  --color-red-600: #f60000;
+}
+
+@utility drag-none {
+  user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+}
+
 #root {
   width: 100%;
   margin: 0 auto;

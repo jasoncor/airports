@@ -7,7 +7,7 @@ export const Route = createRootRoute({
     <div className="w-full min-h-screen flex flex-col bg-white">
       <Header />
       <div className="flex-1 w-full flex justify-center bg-white">
-        <div className="w-full max-w-[1280px] flex flex-col justify-center items-center py-8 md:py-12">
+        <div className="w-full flex flex-col justify-center items-center">
           <Outlet />
         </div>
       </div>
